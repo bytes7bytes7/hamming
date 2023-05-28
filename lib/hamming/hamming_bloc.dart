@@ -34,6 +34,7 @@ class HammingBloc extends Bloc<HammingEvent, HammingState> {
   ) {
     try {
       final input = state.input.split('').map(int.parse).toList();
+
       final output = <int>[];
       final powerOf2Indexes = <int>[];
 
@@ -98,6 +99,7 @@ class HammingBloc extends Bloc<HammingEvent, HammingState> {
   ) {
     try {
       final input = state.input.split('').map(int.parse).toList();
+
       final checking = List.of(input);
       final powerOf2Indexes = <int>[];
 

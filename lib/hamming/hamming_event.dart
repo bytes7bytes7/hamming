@@ -18,6 +18,17 @@ class SetInputHammingEvent extends HammingEvent {
   List<Object?> get props => [input];
 }
 
+class SetInterpretAsWordHammingEvent extends HammingEvent {
+  const SetInterpretAsWordHammingEvent({
+    required this.value,
+  });
+
+  final bool value;
+
+  @override
+  List<Object?> get props => [value];
+}
+
 class EncodeHammingEvent extends HammingEvent {
   const EncodeHammingEvent();
 }

@@ -62,45 +62,71 @@ class _Body extends HookWidget {
         }
       },
       builder: (context, state) {
-        return ListView(
-          children: [
-            SizedBox(
-              height: 300,
-              child: TextField(
-                controller: inputController,
-                onChanged: (v) => bloc.add(SetInputHammingEvent(input: v)),
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    onPressed: () => bloc.add(const PasteToInputHammingEvent()),
-                    icon: const Icon(Icons.paste),
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 80,
+                child: TextField(
+                  controller: inputController,
+                  onChanged: (v) => bloc.add(SetInputHammingEvent(input: v)),
+                  decoration: InputDecoration(
+                    labelText: 'Input',
+                    suffixIcon: IconButton(
+                      onPressed: () =>
+                          bloc.add(const PasteToInputHammingEvent()),
+                      icon: const Icon(Icons.paste),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () => bloc.add(const EncodeHammingEvent()),
-                  child: const Text('Encode'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => bloc.add(const EncodeHammingEvent()),
+                    child: const Text('Encode'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => bloc.add(const DecodeHammingEvent()),
+                    child: const Text('Decode'),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              if (state.hasErrorBit)
+                Text(
+                  'Fixed error on ${state.errorBitIndex} index',
+                  style: const TextStyle(
+                    color: Colors.red,
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: () => bloc.add(const DecodeHammingEvent()),
-                  child: const Text('Decode'),
-                ),
-              ],
-            ),
-            if (state.hasErrorBit) Text(state.errorBitIndex),
-            Row(
-              children: [
-                Text(state.result),
-                IconButton(
-                  onPressed: () =>
-                      bloc.add(const CopyFromClipboardResultHammingEvent()),
-                  icon: const Icon(Icons.copy),
-                ),
-              ],
-            ),
-          ],
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Result: ',
+                    style: TextStyle(
+                      color: Colors.black45,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      state.result,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () =>
+                        bloc.add(const CopyFromClipboardResultHammingEvent()),
+                    icon: const Icon(Icons.copy),
+                  ),
+                ],
+              ),
+            ],
+          ),
         );
       },
     );
