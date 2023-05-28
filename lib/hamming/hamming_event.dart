@@ -37,8 +37,8 @@ class DecodeHammingEvent extends HammingEvent {
   const DecodeHammingEvent();
 }
 
-class CopyFromClipboardResultHammingEvent extends HammingEvent {
-  const CopyFromClipboardResultHammingEvent();
+class CopyResultHammingEvent extends HammingEvent {
+  const CopyResultHammingEvent();
 }
 
 class PasteToInputHammingEvent extends HammingEvent {

@@ -13,7 +13,7 @@ class HammingBloc extends Bloc<HammingEvent, HammingState> {
     on<SetInputHammingEvent>(_setInput);
     on<EncodeHammingEvent>(_encode);
     on<DecodeHammingEvent>(_decode);
-    on<CopyFromClipboardResultHammingEvent>(_copyResult);
+    on<CopyResultHammingEvent>(_copyResult);
     on<PasteToInputHammingEvent>(_pasteToInput);
   }
 
@@ -80,16 +80,22 @@ class HammingBloc extends Bloc<HammingEvent, HammingState> {
       emit(
         state.copyWith(
           result: output.join(''),
+          errorBitIndex: '',
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
           error: 'Ошибка при кодировании',
+          errorBitIndex: '',
         ),
       );
 
-      emit(state.copyWith());
+      emit(
+        state.copyWith(
+          errorBitIndex: '',
+        ),
+      );
     }
   }
 
@@ -158,6 +164,12 @@ class HammingBloc extends Bloc<HammingEvent, HammingState> {
             errorBitIndex: '$errorIndex',
           ),
         );
+      } else {
+        emit(
+          state.copyWith(
+            errorBitIndex: '',
+          ),
+        );
       }
 
       final output = <int>[];
@@ -176,15 +188,20 @@ class HammingBloc extends Bloc<HammingEvent, HammingState> {
       emit(
         state.copyWith(
           error: 'Ошибка при декодировании',
+          errorBitIndex: '',
         ),
       );
 
-      emit(state.copyWith());
+      emit(
+        state.copyWith(
+          errorBitIndex: '',
+        ),
+      );
     }
   }
 
   Future<void> _copyResult(
-    CopyFromClipboardResultHammingEvent event,
+    CopyResultHammingEvent event,
     Emitter<HammingState> emit,
   ) async {
     await Clipboard.setData(ClipboardData(text: state.result));
@@ -194,6 +211,8 @@ class HammingBloc extends Bloc<HammingEvent, HammingState> {
         isResultCopied: true,
       ),
     );
+
+    emit(state.copyWith());
   }
 
   Future<void> _pasteToInput(
